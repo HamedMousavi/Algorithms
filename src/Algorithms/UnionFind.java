@@ -2,6 +2,8 @@
  * Created by hamed on 9/3/16.
  */
 
+package Algorithms;
+
 public class UnionFind
 {
 
@@ -18,7 +20,7 @@ public class UnionFind
     }
 
 
-    void Union(int node1Id, int node2Id)
+    public void Union(int node1Id, int node2Id)
     {
         if (IsConnected(node1Id, node2Id)) return;
 
@@ -30,7 +32,7 @@ public class UnionFind
         }
     }
 
-    boolean IsConnected(int node1Id, int node2Id)
+    public boolean IsConnected(int node1Id, int node2Id)
     {
         if (node1Id >= nodeIds.length || node2Id >= nodeIds.length || node1Id < 0 || node2Id < 0)
         {
