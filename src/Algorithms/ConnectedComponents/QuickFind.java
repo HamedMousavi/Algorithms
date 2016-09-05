@@ -2,15 +2,15 @@
  * Created by hamed on 9/3/16.
  */
 
-package Algorithms;
+package Algorithms.ConnectedComponents;
 
-public class UnionFind
+public class QuickFind
 {
 
     int nodeIds[];
 
 
-    public UnionFind (int nodeCount)
+    public QuickFind(int nodeCount)
     {
         nodeIds = new int[nodeCount];
         for(int i = 0; i < nodeIds.length; i++)
@@ -20,6 +20,7 @@ public class UnionFind
     }
 
 
+    // This should have been called Connect though!
     public void Union(int node1Id, int node2Id)
     {
         if (IsConnected(node1Id, node2Id)) return;

@@ -1,7 +1,7 @@
 package Tests;
 
 
-import Algorithms.UnionFind;
+import Algorithms.ConnectedComponents.QuickFind;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ public class QuickFindTest
     @Test
     public void IntegrationTest()
     {
-        UnionFind uf = new UnionFind(10);
+        QuickFind uf = new QuickFind(10);
         uf.Union(3, 4);
         uf.Union(3, 8);
         uf.Union(6, 5);
