@@ -1,17 +1,15 @@
-/**
- * Created by hamed on 9/3/16.
- */
-
 package Algorithms.ConnectedComponents;
 
-
-public class QuickFind implements IUnionFind
+/**
+ * Created by hamed on 9/5/16.
+ */
+public class QuickUnion implements IUnionFind
 {
 
     int nodeIds[];
 
 
-    public QuickFind(int nodeCount)
+    public QuickUnion(int nodeCount)
     {
         nodeIds = new int[nodeCount];
         for(int i = 0; i < nodeIds.length; i++)
@@ -26,12 +24,23 @@ public class QuickFind implements IUnionFind
     {
         if (IsConnected(node1Id, node2Id)) return;
 
-        int oldGroupId = nodeIds[node1Id];
-        int newGroupId = nodeIds[node2Id];
-        for(int i = 0; i < nodeIds.length; i++)
+        nodeIds[Root(node2Id)] = nodeIds[Root(node1Id)];
+    }
+
+
+    private int Root(int nodeId)
+    {
+        if (nodeId >= nodeIds.length || nodeId < 0)
         {
-            if (nodeIds[i] == oldGroupId) nodeIds[i] = newGroupId;
+            throw new IndexOutOfBoundsException("Requested node Id is beyond boundaries of this class");
         }
+
+        while(nodeIds[nodeId] != nodeId)
+        {
+            nodeId = nodeIds[nodeId];
+        }
+
+        return nodeId;
     }
 
 
@@ -43,7 +52,7 @@ public class QuickFind implements IUnionFind
             throw new IndexOutOfBoundsException("Requested node Ids are beyond boundaries of this class");
         }
 
-        return nodeIds[node1Id] == nodeIds[node2Id];
+        return Root(node1Id) == Root(node2Id);
     }
 
 

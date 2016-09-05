@@ -1,18 +1,29 @@
-package Tests;
-
-
+import Algorithms.ConnectedComponents.IUnionFind;
 import Algorithms.ConnectedComponents.QuickFind;
+import Algorithms.ConnectedComponents.QuickUnion;
 import org.junit.Assert;
 import org.junit.Test;
 
 
-public class QuickFindTest
+public class UnionFindTest
 {
 
     @Test
-    public void IntegrationTest()
+    public void QuickFindTest()
     {
-        QuickFind uf = new QuickFind(10);
+        ConnectAndTest(new QuickFind(10));
+    }
+
+
+    @Test
+    public void QuickUnionTest()
+    {
+        ConnectAndTest(new QuickUnion(10));
+    }
+
+
+    private void ConnectAndTest(IUnionFind uf)
+    {
         uf.Union(3, 4);
         uf.Union(3, 8);
         uf.Union(6, 5);
