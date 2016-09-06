@@ -1,5 +1,6 @@
 import Algorithms.ConnectedComponents.IUnionFind;
 import Algorithms.ConnectedComponents.QuickFind;
+import Algorithms.ConnectedComponents.QuickFindAndUnion;
 import Algorithms.ConnectedComponents.QuickUnion;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,6 +20,13 @@ public class UnionFindTest
     public void QuickUnionTest()
     {
         ConnectAndTest(new QuickUnion(10));
+    }
+
+
+    @Test
+    public void QuickFindAndUnionTest()
+    {
+        ConnectAndTest(new QuickFindAndUnion(10));
     }
 
 
