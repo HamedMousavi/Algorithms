@@ -1,9 +1,7 @@
-import Algorithms.ConnectedComponents.IUnionFind;
-import Algorithms.ConnectedComponents.QuickFind;
-import Algorithms.ConnectedComponents.QuickFindAndUnion;
-import Algorithms.ConnectedComponents.QuickUnion;
+import Algorithms.ConnectedComponents.*;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.experimental.theories.internal.Assignments;
 
 
 public class UnionFindTest
@@ -27,6 +25,36 @@ public class UnionFindTest
     public void QuickFindAndUnionTest()
     {
         ConnectAndTest(new QuickFindAndUnion(10));
+    }
+
+
+    @Test
+    public void PercolationTest()
+    {
+        Percolation p = new Percolation(3);
+        for (int i = 1; i <= 3; i++){
+            for (int j = 1; j <= 3; j++){
+                Assert.assertEquals(p.isOpen(i, j), false);
+                Assert.assertEquals(p.isFull(i, j), false);
+            }
+        }
+
+        p.open(1, 2);
+        Assert.assertEquals(p.isOpen(1, 2), true);
+
+        p.open(2, 2);
+        Assert.assertEquals(p.isOpen(2, 2), true);
+        Assert.assertEquals(p.isFull(2, 2), true);
+
+        Assert.assertEquals(p.percolates(), false);
+
+        p.open(2, 3);
+        Assert.assertEquals(p.isFull(2, 3), true);
+        Assert.assertEquals(p.percolates(), false);
+
+        p.open(3, 3);
+        Assert.assertEquals(p.isFull(3, 3), true);
+        Assert.assertEquals(p.percolates(), true);
     }
 
 
