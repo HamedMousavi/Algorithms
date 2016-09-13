@@ -58,6 +58,15 @@ public class UnionFindTest
     }
 
 
+    @Test
+    public void PercolationStatsTest()
+    {
+        PercolationStats ps = new PercolationStats(200, 100);
+
+        Assert.assertNotEquals(ps.mean(), 0);
+    }
+
+
     private void ConnectAndTest(IUnionFind uf)
     {
         uf.Union(3, 4);

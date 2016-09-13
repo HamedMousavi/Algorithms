@@ -50,7 +50,7 @@ public class Percolation
         if (i > 1 && isOpen(i-1, j)) uf.Union(ToUfIndex(i-1, j), ToUfIndex(i, j));
         if (i < gridSize && isOpen(i+1, j)) uf.Union(ToUfIndex(i+1, j), ToUfIndex(i, j));
 
-        if (j > 1 && isOpen(i, j - 1)) uf.Union(ToUfIndex(i, j - 1), ToUfIndex(i, j));
+        if (j > 1 && isOpen(i, j-1)) uf.Union(ToUfIndex(i, j-1), ToUfIndex(i, j));
         if (j < gridSize && isOpen(i, j + 1)) uf.Union(ToUfIndex(i, j+1), ToUfIndex(i, j));
     }
 
