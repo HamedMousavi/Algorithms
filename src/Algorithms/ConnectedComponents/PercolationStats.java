@@ -1,51 +1,45 @@
 package Algorithms.ConnectedComponents;
 
-import java.util.Random;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 
-/**
- * Created by hamed on 9/13/16.
- */
 public class PercolationStats
 {
 
-    Percolation p;
-    double[] sampleThreshold;
-    double sampleMeanThreshold, sampleMeanDeviation, confidence;
+    private double sampleMeanThreshold, sampleMeanDeviation, confidence;
 
     public PercolationStats(int n, int trials)    // perform trials independent experiments on an n-by-n grid
     {
         if (n <= 0 || trials <= 0) throw new java.lang.IllegalArgumentException("");
 
-        Random rand = new Random();
-
-        sampleThreshold = new double[trials];
+        double[] sampleThreshold = new double[trials];
 
         int openCount;
         sampleMeanThreshold = 0;
         for (int i = 0; i < trials; i++) {
             openCount = 0;
-            p = new Percolation(n);
+            Percolation p = new Percolation(n);
 
             do {
-                int row = rand.nextInt(n) + 1;
-                int col = rand.nextInt(n) + 1;
+                int row = StdRandom.uniform(1, n + 1);
+                int col = StdRandom.uniform(1, n + 1);
                 if (!p.isOpen(row, col)) {
                     p.open(row, col);
                     openCount++;
                 }
             } while (!p.percolates());
 
-            sampleThreshold[i] = Double.valueOf(openCount) / Double.valueOf(n * n);
+            sampleThreshold[i] = (double) openCount / (double) (n * n);
             sampleMeanThreshold += sampleThreshold[i];
         }
 
-        sampleMeanThreshold /= Double.valueOf(trials);
+        sampleMeanThreshold /= (double) trials;
 
         for (int i = 0; i < trials; i++) {
             sampleMeanDeviation += Math.pow(sampleThreshold[i] - sampleMeanThreshold, 2);
         }
 
-        sampleMeanDeviation /= Double.valueOf(trials - 1);
+        sampleMeanDeviation /= (double) (trials - 1);
         sampleMeanDeviation = Math.sqrt(sampleMeanDeviation);
 
         confidence = (1.96d * sampleMeanDeviation) / Math.sqrt(trials);
@@ -76,8 +70,17 @@ public class PercolationStats
     }
 
 
-    //public static void main(String[] args)    // test client (described below)
-    //{
+    public static void main(String[] args)    // test client (described below)
+    {
+        PercolationStats ps = new PercolationStats(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
 
-    //}
+        StdOut.printf("mean = %f", ps.mean());
+        StdOut.println();
+
+        StdOut.printf("stddev = %f", ps.stddev());
+        StdOut.println();
+
+        StdOut.printf("95%% confidence interval = %f, %f", ps.confidenceLo(), ps.confidenceHi());
+        StdOut.println();
+    }
 }

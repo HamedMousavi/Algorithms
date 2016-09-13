@@ -61,9 +61,11 @@ public class UnionFindTest
     @Test
     public void PercolationStatsTest()
     {
-        PercolationStats ps = new PercolationStats(200, 100);
+        //PercolationStats ps = new PercolationStats(200, 100);
 
-        Assert.assertNotEquals(ps.mean(), 0);
+        //Assert.assertNotEquals(ps.mean(), 0);
+
+        PercolationStats.main(new String[] {"200", "100"});
     }
 
 
