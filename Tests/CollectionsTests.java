@@ -1,7 +1,10 @@
-import Algorithms.Collections.Deque;
-import Algorithms.Collections.RandomizedQueue;
+//import Algorithms.Collections.Deque;
+//import Algorithms.Collections.RandomizedQueue;
+//import Algorithms.Collections.Subset;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Iterator;
 
 public class CollectionsTests
 {
@@ -11,61 +14,68 @@ public class CollectionsTests
         Deque<Integer> deq = new Deque<Integer>();
         Assert.assertEquals(deq.isEmpty(), true);
 
+        Iterator<Integer> iterator = deq.iterator();
+
+        deq.addLast(2);
+        deq.addFirst(1);
+        int a = iterator.next();
+        a = iterator.next();
+
         deq.addLast(20);
         Assert.assertEquals(deq.isEmpty(), false);
-        Assert.assertEquals(deq.hasNext(), true);
+        Assert.assertEquals(iterator.hasNext(), true);
 
         deq.removeFirst();
         Assert.assertEquals(deq.isEmpty(), true);
-        Assert.assertEquals(deq.hasNext(), false);
+        Assert.assertEquals(iterator.hasNext(), false);
 
         deq.addFirst(0);
         Assert.assertEquals(deq.isEmpty(), false);
-        Assert.assertEquals(deq.hasNext(), true);
+        Assert.assertEquals(iterator.hasNext(), true);
 
         deq.removeLast();
         Assert.assertEquals(deq.isEmpty(), true);
-        Assert.assertEquals(deq.hasNext(), false);
+        Assert.assertEquals(iterator.hasNext(), false);
 
         deq.addFirst(0);
         deq.addFirst(0);
         Assert.assertEquals(deq.isEmpty(), false);
-        Assert.assertEquals(deq.hasNext(), true);
+        Assert.assertEquals(iterator.hasNext(), true);
 
         deq.removeLast();
         deq.removeLast();
         Assert.assertEquals(deq.isEmpty(), true);
-        Assert.assertEquals(deq.hasNext(), false);
+        Assert.assertEquals(iterator.hasNext(), false);
 
         deq.addFirst(0);
         deq.addFirst(0);
         Assert.assertEquals(deq.isEmpty(), false);
-        Assert.assertEquals(deq.hasNext(), true);
+        Assert.assertEquals(iterator.hasNext(), true);
 
         deq.removeFirst();
         deq.removeLast();
         Assert.assertEquals(deq.isEmpty(), true);
-        Assert.assertEquals(deq.hasNext(), false);
+        Assert.assertEquals(iterator.hasNext(), false);
 
         deq.addLast(0);
         deq.addFirst(0);
         Assert.assertEquals(deq.isEmpty(), false);
-        Assert.assertEquals(deq.hasNext(), true);
+        Assert.assertEquals(iterator.hasNext(), true);
 
         deq.removeFirst();
         deq.removeFirst();
         Assert.assertEquals(deq.isEmpty(), true);
-        Assert.assertEquals(deq.hasNext(), false);
+        Assert.assertEquals(iterator.hasNext(), false);
 
         deq.addLast(0);
         deq.addLast(0);
         Assert.assertEquals(deq.isEmpty(), false);
-        Assert.assertEquals(deq.hasNext(), true);
+        Assert.assertEquals(iterator.hasNext(), true);
 
         deq.removeFirst();
         deq.removeFirst();
         Assert.assertEquals(deq.isEmpty(), true);
-        Assert.assertEquals(deq.hasNext(), false);
+        Assert.assertEquals(iterator.hasNext(), false);
 
         deq.addLast(20);
         deq.addFirst(10);
@@ -99,6 +109,26 @@ public class CollectionsTests
     {
         RandomizedQueue<Integer> deq = new RandomizedQueue<Integer>();
         Assert.assertEquals(deq.isEmpty(), true);
+
+
+        for (int i = 0; i < 10000; i++)
+        {
+            deq.enqueue(i);
+            deq.enqueue(i);
+            deq.enqueue(i);
+            deq.dequeue();
+            deq.enqueue(i);
+            deq.dequeue();
+            deq.dequeue();
+            deq.dequeue();
+        }
+
+        deq.enqueue(2);
+        deq.enqueue(0);
+        deq.enqueue(2);
+        deq.enqueue(4);
+        deq.sample();
+
 
         deq.enqueue(100);
         deq.enqueue(90);

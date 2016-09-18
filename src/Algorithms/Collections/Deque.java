@@ -1,10 +1,10 @@
-package Algorithms.Collections;
+// package Algorithms.Collections;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 
-public class Deque<Item> implements Iterable<Item>, Iterator<Item> {
+public class Deque<Item> implements Iterable<Item> {
 
     private int count;
     private Node first;
@@ -19,19 +19,19 @@ public class Deque<Item> implements Iterable<Item>, Iterator<Item> {
     }
 
 
-    public final boolean isEmpty()                 // is the deque empty?
+    public boolean isEmpty()                 // is the deque empty?
     {
         return count == 0;
     }
 
 
-    public final int size()                        // return the number of items on the deque
+    public int size()                        // return the number of items on the deque
     {
         return count;
     }
 
 
-    public final void addFirst(Item item)          // add the item to the front
+    public void addFirst(Item item)          // add the item to the front
     {
         if (item == null) throw new java.lang.NullPointerException();
 
@@ -45,7 +45,7 @@ public class Deque<Item> implements Iterable<Item>, Iterator<Item> {
     }
 
 
-    public final void addLast(Item item)           // add the item to the end
+    public void addLast(Item item)           // add the item to the end
     {
         Node node = new Node(item, null, last);
 
@@ -58,7 +58,7 @@ public class Deque<Item> implements Iterable<Item>, Iterator<Item> {
     }
 
 
-    public final Item removeFirst()                // remove and return the item from the front
+    public Item removeFirst()                // remove and return the item from the front
     {
         if (count <= 0) throw new java.util.NoSuchElementException();
 
@@ -79,7 +79,7 @@ public class Deque<Item> implements Iterable<Item>, Iterator<Item> {
     }
 
 
-    public final Item removeLast()                 // remove and return the item from the end
+    public Item removeLast()                 // remove and return the item from the end
     {
         if (count <= 0) throw new java.util.NoSuchElementException();
 
@@ -99,54 +99,66 @@ public class Deque<Item> implements Iterable<Item>, Iterator<Item> {
     }
 
 
-    public final Iterator<Item> iterator()         // return an iterator over items in order from front to end
+    public Iterator<Item> iterator()         // return an iterator over items in order from front to end
     {
-        return this;
+        return new DequeueIterator(this);
     }
 
 
-    @Override
-    public final boolean hasNext()
+    private class DequeueIterator implements Iterator<Item>
     {
-        return count > 0;
+
+        private Deque<Item> owningQueue;
+        private Node current;
+
+
+        public DequeueIterator(Deque<Item> owner)
+        {
+            owningQueue = owner;
+        }
+
+        @Override
+        public boolean hasNext()
+        {
+            return owningQueue.count > 0;
+        }
+
+
+        @Override
+        public Item next()
+        {
+            if (owningQueue.count <= 0) throw new NoSuchElementException();
+
+            // return owningQueue.removeFirst();
+
+            if (current == null) current = owningQueue.first;
+            Node result = current;
+            current = result.next;
+            return result.item;
+        }
+
+        @Override
+        public void remove()
+        {
+            throw new java.lang.UnsupportedOperationException();
+        }
     }
 
 
-    @Override
-    public final Item next()
-    {
-        if (count <= 0) throw new NoSuchElementException();
-
-        return removeFirst();
-
-        //if (current == null) current = first;
-        //Node result = current;
-        //current = result == null ? null : result.next;
-
-        //return result.item;
-    }
-
-    @Override
-    public final void remove()
-    {
-        throw new java.lang.UnsupportedOperationException();
-    }
+    // public static void main(String[] args)   // unit testing
+    // {}
 
 
-    //public static void main(String[] args)   // unit testing
-    //{}
-
-
-    private final class Node
+    private class Node
     {
         private Item item;
         private Node next;
         private Node previous;
 
-        //private Node(Item wrappedItem)
-        //{
-        //    this.item = wrappedItem;
-        //}
+        // private Node(Item wrappedItem)
+        // {
+        //     this.item = wrappedItem;
+        // }
 
         private Node(Item wrappedItem, Node nextNode, Node previousNode)
         {

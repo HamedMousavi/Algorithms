@@ -1,4 +1,4 @@
-package Algorithms.Collections;
+// package Algorithms.Collections;
 
 import edu.princeton.cs.algs4.StdRandom;
 
@@ -37,12 +37,12 @@ public class RandomizedQueue<Item> implements Iterable<Item>
     {
         if (item == null) throw new java.lang.NullPointerException();
 
-        InsertBeforeOrAfter(FindRandomNode(), new Node(item, null, null));
+        insertBeforeOrAfter(findRandomNode(), new Node(item, null, null));
         count++;
     }
 
 
-    private void InsertBeforeOrAfter(Node oldNode, Node newNode)
+    private void insertBeforeOrAfter(Node oldNode, Node newNode)
     {
 
         if (oldNode == null)
@@ -77,9 +77,14 @@ public class RandomizedQueue<Item> implements Iterable<Item>
     {
         // Items inserted in a random order so just remove the first item it will be random!
         if (count <= 0) throw new java.util.NoSuchElementException();
-
+        if (first == null || first.item == null)
+        {
+            return null;
+        }
         count--;
-        Node result = first;
+
+        Item result = first.item;
+
 
         if (count <= 0)
         {
@@ -89,36 +94,36 @@ public class RandomizedQueue<Item> implements Iterable<Item>
         else
         {
             first = first.next;
-        }
-
-        return result.item;
-    }
-
-
-    public Item sample()                     // return (but do not remove) a random item
-    {
-        if (count <= 0) throw new java.util.NoSuchElementException();
-
-        Item result = current.item;
-
-        current = current.next;
-        if (current == null)
-        {
-            current = first;
+            first.previous = null;
         }
 
         return result;
     }
 
 
-    private Node FindRandomNode()
+    public Item sample()                     // return (but do not remove) a random item
+    {
+        if (count <= 0) throw new java.util.NoSuchElementException();
+        if (current == null)
+        {
+            current = first;
+        }
+
+        Item result = current.item;
+        current = current.next;
+
+        return result;
+    }
+
+
+    private Node findRandomNode()
     {
         if (count <= 0) return null;
 
         int index = StdRandom.uniform(0, count);
         Node random = first;
 
-        for(int i = 1; i < index; i++)
+        for (int i = 1; i < index; i++)
         {
             random = random.next;
         }
@@ -133,13 +138,13 @@ public class RandomizedQueue<Item> implements Iterable<Item>
     }
 
 
-    //public static void main(String[] args)   // unit testing
-    //{}
+    // public static void main(String[] args)   // unit testing
+    // {}
 
 
-    private final class RandomizedQueueIterator implements Iterator<Item>
+    private class RandomizedQueueIterator implements Iterator<Item>
     {
-        RandomizedQueue<Item> duplicate;
+        private RandomizedQueue<Item> duplicate;
 
         private RandomizedQueueIterator(RandomizedQueue<Item> originalQueue)
         {
@@ -149,7 +154,7 @@ public class RandomizedQueue<Item> implements Iterable<Item>
                 duplicate.first = new Node(originalQueue.first.item, originalQueue.first.next, originalQueue.first.previous);
                 Node orgCurrent = originalQueue.first;
                 Node dupCurrent = duplicate.first;
-                for(int i = 1; i < originalQueue.size(); i++)
+                for (int i = 1; i < originalQueue.size(); i++)
                 {
                     orgCurrent = orgCurrent.next;
                     dupCurrent.next = new Node(orgCurrent.item, orgCurrent.next, orgCurrent.previous);
@@ -169,18 +174,18 @@ public class RandomizedQueue<Item> implements Iterable<Item>
 
         @Override
         public Item next() {
-            return duplicate.dequeue();
+            return duplicate.sample();
         }
 
 
         @Override
-        public final void remove()
+        public void remove()
         {
             throw new java.lang.UnsupportedOperationException();
         }  }
 
 
-    private final class Node
+    private class Node
     {
         private Item item;
         private Node next;
