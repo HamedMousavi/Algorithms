@@ -1,27 +1,14 @@
 package Algorithms.Collections;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 
 public class Deque<Item> implements Iterable<Item>, Iterator<Item> {
 
     private int count;
-
-    private class Node
-    {
-        public Item item;
-        public Node next;
-        public Node previous;
-
-        public Node(Item item)
-        {
-            this.item = item;
-        }
-    }
-
     private Node first;
     private Node last;
-    private Node current;
 
 
     public Deque()                           // construct an empty deque
@@ -32,94 +19,115 @@ public class Deque<Item> implements Iterable<Item>, Iterator<Item> {
     }
 
 
-    public boolean isEmpty()                 // is the deque empty?
+    public final boolean isEmpty()                 // is the deque empty?
     {
-        return first == null;
+        return count == 0;
     }
 
 
-    public int size()                        // return the number of items on the deque
+    public final int size()                        // return the number of items on the deque
     {
         return count;
     }
 
 
-    public void addFirst(Item item)          // add the item to the front
+    public final void addFirst(Item item)          // add the item to the front
     {
-        Node node = new Node(item);
-        node.next = first;
+        if (item == null) throw new java.lang.NullPointerException();
+
+        Node node = new Node(item, first, null);
 
         if (first != null) first.previous = node;
         first = node;
 
         if (last == null) last = first;
-        if (current == null) current = first;
         count++;
     }
 
 
-    public void addLast(Item item)           // add the item to the end
+    public final void addLast(Item item)           // add the item to the end
     {
-        Node node = new Node(item);
+        Node node = new Node(item, null, last);
 
-        node.previous = last;
         if (last != null) last.next = node;
         last = node;
 
         if (first == null) first = last;
-        if (current == null) current = last;
 
         count++;
     }
 
 
-    public Item removeFirst()                // remove and return the item from the front
+    public final Item removeFirst()                // remove and return the item from the front
     {
-        count--;
+        if (count <= 0) throw new java.util.NoSuchElementException();
 
+        count--;
         Node result = first;
-        first = first.next;
+
+        if (count <= 0)
+        {
+            first = null;
+            last = null;
+        }
+        else
+        {
+            first = first.next;
+        }
 
         return result.item;
     }
 
 
-    public Item removeLast()                 // remove and return the item from the end
+    public final Item removeLast()                 // remove and return the item from the end
     {
+        if (count <= 0) throw new java.util.NoSuchElementException();
+
         count--;
         Node result = last;
-        last = last.previous;
+        if (count <= 0)
+        {
+            first = null;
+            last = null;
+        }
+        else
+        {
+            last = last.previous;
+        }
 
         return result.item;
     }
 
 
-    public Iterator<Item> iterator()         // return an iterator over items in order from front to end
+    public final Iterator<Item> iterator()         // return an iterator over items in order from front to end
     {
         return this;
     }
 
 
-
     @Override
-    public boolean hasNext()
+    public final boolean hasNext()
     {
-        return current != null && current.next != null;
+        return count > 0;
     }
 
 
     @Override
-    public Item next()
+    public final Item next()
     {
-        if (current == null) current = first;
-        Node result = current;
-        current = result == null ? null : result.next;
+        if (count <= 0) throw new NoSuchElementException();
 
-        return result.item;
+        return removeFirst();
+
+        //if (current == null) current = first;
+        //Node result = current;
+        //current = result == null ? null : result.next;
+
+        //return result.item;
     }
 
     @Override
-    public void remove()
+    public final void remove()
     {
         throw new java.lang.UnsupportedOperationException();
     }
@@ -127,4 +135,24 @@ public class Deque<Item> implements Iterable<Item>, Iterator<Item> {
 
     //public static void main(String[] args)   // unit testing
     //{}
+
+
+    private final class Node
+    {
+        private Item item;
+        private Node next;
+        private Node previous;
+
+        private Node(Item wrappedItem)
+        {
+            this.item = wrappedItem;
+        }
+
+        private Node(Item wrappedItem, Node nextNode, Node previousNode)
+        {
+            this.item = wrappedItem;
+            next = nextNode;
+            previous = previousNode;
+        }
+    }
 }
