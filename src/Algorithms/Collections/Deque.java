@@ -143,10 +143,10 @@ public class Deque<Item> implements Iterable<Item>, Iterator<Item> {
         private Node next;
         private Node previous;
 
-        private Node(Item wrappedItem)
-        {
-            this.item = wrappedItem;
-        }
+        //private Node(Item wrappedItem)
+        //{
+        //    this.item = wrappedItem;
+        //}
 
         private Node(Item wrappedItem, Node nextNode, Node previousNode)
         {
