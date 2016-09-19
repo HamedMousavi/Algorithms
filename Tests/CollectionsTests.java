@@ -13,13 +13,13 @@ public class CollectionsTests
     {
         Deque<Integer> deq = new Deque<Integer>();
         Assert.assertEquals(deq.isEmpty(), true);
-
         Iterator<Integer> iterator = deq.iterator();
 
-
-        deq.addLast(20);
+        deq.addFirst(20);
         Assert.assertEquals(deq.isEmpty(), false);
         Assert.assertEquals(iterator.hasNext(), true);
+
+        int t = iterator.next();
 
         deq.removeFirst();
         Assert.assertEquals(deq.isEmpty(), true);
@@ -114,25 +114,8 @@ public class CollectionsTests
         RandomizedQueue<Integer> deq = new RandomizedQueue<Integer>();
         Assert.assertEquals(deq.isEmpty(), true);
 
-
-        for (int i = 0; i < 10000; i++)
-        {
-            deq.enqueue(i);
-            deq.enqueue(i);
-            deq.enqueue(i);
-            deq.dequeue();
-            deq.enqueue(i);
-            deq.dequeue();
-            deq.dequeue();
-            deq.dequeue();
-        }
-
-        deq.enqueue(2);
-        deq.enqueue(0);
-        deq.enqueue(2);
-        deq.enqueue(4);
-        deq.sample();
-
+        deq.enqueue(10);
+        deq.dequeue();
 
         deq.enqueue(100);
         deq.enqueue(90);
@@ -226,6 +209,26 @@ public class CollectionsTests
         Assert.assertEquals(deq.isEmpty(), false);
         deq.dequeue();
         Assert.assertEquals(deq.isEmpty(), true);
+
+
+
+        for (int i = 0; i < 10000; i++)
+        {
+            deq.enqueue(i);
+            deq.enqueue(i);
+            deq.enqueue(i);
+            deq.dequeue();
+            deq.enqueue(i);
+            deq.dequeue();
+            deq.dequeue();
+            deq.dequeue();
+        }
+
+        deq.enqueue(2);
+        deq.enqueue(0);
+        deq.enqueue(2);
+        deq.enqueue(4);
+        deq.sample();
 
         //for(int item: deq) {
         //    StdOut.printf("%d, ", item);

@@ -1,7 +1,5 @@
-// package Algorithms.Collections;
 
 import edu.princeton.cs.algs4.StdRandom;
-
 import java.util.Iterator;
 
 
@@ -9,15 +7,21 @@ public class RandomizedQueue<Item> implements Iterable<Item>
 {
 
     private int count;
-    private Node first;
-    private Node current;
+    private int capacity;
+    private Item[] items;
 
 
-    public RandomizedQueue()                 // construct an empty randomized queue
+    public RandomizedQueue()                // construct an empty randomized queue
+    {
+        init(10);
+    }
+
+
+    private void init(int itemsCapacity)                 // construct an empty randomized queue
     {
         count = 0;
-        first = null;
-        current = null;
+        capacity = itemsCapacity;
+        if (capacity > 0) items = duplicateArray(capacity);
     }
 
 
@@ -37,39 +41,10 @@ public class RandomizedQueue<Item> implements Iterable<Item>
     {
         if (item == null) throw new java.lang.NullPointerException();
 
-        insertBeforeOrAfter(findRandomNode(), new Node(item, null, null));
         count++;
-    }
+        if (count >= capacity) resizeQueu();
 
-
-    private void insertBeforeOrAfter(Node oldNode, Node newNode)
-    {
-
-        if (oldNode == null)
-        {
-            first = newNode;
-        }
-        else
-        {
-            if (StdRandom.uniform(1, 2) == 1)
-            {
-                // Before old Node
-                newNode.previous = oldNode.previous;
-                newNode.next = oldNode;
-                if (oldNode.previous != null) oldNode.previous.next = newNode;
-                oldNode.previous = newNode;
-
-                if (newNode.previous == null) first = newNode;
-            }
-            else
-            {
-                // After the old Node
-                newNode.next = oldNode.next;
-                newNode.previous = oldNode;
-                oldNode.next.previous = newNode;
-                oldNode.next = newNode;
-            }
-        }
+        items[count - 1] = item;
     }
 
 
@@ -77,24 +52,21 @@ public class RandomizedQueue<Item> implements Iterable<Item>
     {
         // Items inserted in a random order so just remove the first item it will be random!
         if (count <= 0) throw new java.util.NoSuchElementException();
-        if (first == null || first.item == null)
-        {
-            return null;
-        }
+
+        int randomIndex = StdRandom.uniform(0, count);
         count--;
+        Item result = items[randomIndex];
 
-        Item result = first.item;
-
-
-        if (count <= 0)
+        if (randomIndex != count)
         {
-            first = null;
-            current = null;
+            // last item is to be returned, hurray!
+            shiftItems(randomIndex);
         }
-        else
+
+        if (count < capacity / 4)
         {
-            first = first.next;
-            first.previous = null;
+            capacity /= 2;
+            items = duplicateArray(capacity);
         }
 
         return result;
@@ -104,65 +76,59 @@ public class RandomizedQueue<Item> implements Iterable<Item>
     public Item sample()                     // return (but do not remove) a random item
     {
         if (count <= 0) throw new java.util.NoSuchElementException();
-        if (current == null)
-        {
-            current = first;
-        }
 
-        Item result = current.item;
-        current = current.next;
-
-        return result;
+        return items[StdRandom.uniform(0, count)];
     }
 
 
-    private Node findRandomNode()
+    private void shiftItems(int randomIndex)
     {
-        if (count <= 0) return null;
-
-        int index = StdRandom.uniform(0, count);
-        Node random = first;
-
-        for (int i = 1; i < index; i++)
+        for (int i = randomIndex + 1; i <= count + 1; i++)
         {
-            random = random.next;
+            items[i - 1] = items[i];
+        }
+    }
+
+
+    private void resizeQueu()
+    {
+        capacity *= 2;
+        items = duplicateArray(capacity);
+    }
+
+
+    private Item[] duplicateArray(int newCapacity)
+    {
+        Item[] newArray = (Item[]) new Object[newCapacity];
+
+        for (int i = 0; i < count; i++)
+        {
+            newArray[i] = items[i];
         }
 
-        return random;
+        // System.gc();
+
+        return newArray;
     }
 
 
     public Iterator<Item> iterator()         // return an independent iterator over items in random order
     {
-        return new RandomizedQueueIterator(this);
+        return new RandomizedQueueIterator();
     }
-
-
-    // public static void main(String[] args)   // unit testing
-    // {}
 
 
     private class RandomizedQueueIterator implements Iterator<Item>
     {
         private RandomizedQueue<Item> duplicate;
 
-        private RandomizedQueueIterator(RandomizedQueue<Item> originalQueue)
+        private RandomizedQueueIterator()
         {
+            // Todo: duplicate passed queue
             duplicate = new RandomizedQueue<Item>();
-
-            if (!originalQueue.isEmpty()) {
-                duplicate.first = new Node(originalQueue.first.item, originalQueue.first.next, originalQueue.first.previous);
-                Node orgCurrent = originalQueue.first;
-                Node dupCurrent = duplicate.first;
-                for (int i = 1; i < originalQueue.size(); i++)
-                {
-                    orgCurrent = orgCurrent.next;
-                    dupCurrent.next = new Node(orgCurrent.item, orgCurrent.next, orgCurrent.previous);
-                    dupCurrent = dupCurrent.next;
-                }
-
-                duplicate.count = originalQueue.count;
-            }
+            duplicate.items = duplicateArray(capacity);
+            duplicate.capacity = capacity;
+            duplicate.count = count;
         }
 
 
@@ -174,7 +140,7 @@ public class RandomizedQueue<Item> implements Iterable<Item>
 
         @Override
         public Item next() {
-            return duplicate.sample();
+            return duplicate.dequeue();
         }
 
 
@@ -182,20 +148,6 @@ public class RandomizedQueue<Item> implements Iterable<Item>
         public void remove()
         {
             throw new java.lang.UnsupportedOperationException();
-        }  }
-
-
-    private class Node
-    {
-        private Item item;
-        private Node next;
-        private Node previous;
-
-        private Node(Item wrappedItem, Node nextNode, Node previousNode)
-        {
-            this.item = wrappedItem;
-            next = nextNode;
-            previous = previousNode;
         }
     }
 }

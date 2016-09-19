@@ -47,6 +47,8 @@ public class Deque<Item> implements Iterable<Item> {
 
     public void addLast(Item item)           // add the item to the end
     {
+        if (item == null) throw new java.lang.NullPointerException();
+
         Node node = new Node(item, null, last);
 
         if (last != null) last.next = node;
@@ -101,40 +103,31 @@ public class Deque<Item> implements Iterable<Item> {
 
     public Iterator<Item> iterator()         // return an iterator over items in order from front to end
     {
-        return new DequeueIterator(this);
+        return new DequeueIterator();
     }
 
 
     private class DequeueIterator implements Iterator<Item>
     {
-
-        private Deque<Item> owningQueue;
         private Node current;
-
-
-        public DequeueIterator(Deque<Item> owner)
-        {
-            owningQueue = owner;
-        }
 
         @Override
         public boolean hasNext()
         {
-            return owningQueue.count > 0;
+            return count > 0 && current != last;
         }
-
 
         @Override
         public Item next()
         {
-            if (owningQueue.count <= 0) throw new NoSuchElementException();
+            if (count <= 0) throw new NoSuchElementException();
+            if (current == null) current = first;
+            else if (current == last) throw new java.util.NoSuchElementException();
+            else current = current.next;
 
-            // return owningQueue.removeFirst();
+            if (current == null) throw new java.util.NoSuchElementException();
 
-            if (current == null) current = owningQueue.first;
-            Node result = current;
-            current = result.next;
-            return result.item;
+            return current.item;
         }
 
         @Override
@@ -145,20 +138,11 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
 
-    // public static void main(String[] args)   // unit testing
-    // {}
-
-
     private class Node
     {
         private Item item;
         private Node next;
         private Node previous;
-
-        // private Node(Item wrappedItem)
-        // {
-        //     this.item = wrappedItem;
-        // }
 
         private Node(Item wrappedItem, Node nextNode, Node previousNode)
         {
