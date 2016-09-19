@@ -18,8 +18,6 @@ public class Subset
         }
 
 
-
-
         // String[] words = StdIn.readLine().split("\\s+");
 
         // RandomizedQueue<String> q = new RandomizedQueue<String>();

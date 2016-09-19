@@ -16,10 +16,6 @@ public class CollectionsTests
 
         Iterator<Integer> iterator = deq.iterator();
 
-        deq.addLast(2);
-        deq.addFirst(1);
-        int a = iterator.next();
-        a = iterator.next();
 
         deq.addLast(20);
         Assert.assertEquals(deq.isEmpty(), false);
@@ -101,6 +97,14 @@ public class CollectionsTests
         last = deq.removeFirst();
         Assert.assertEquals(last, 2);
         Assert.assertEquals(deq.isEmpty(), false);
+
+        last = deq.removeFirst();
+        last = deq.removeFirst();
+        last = deq.removeFirst();
+        deq.addLast(2);
+        deq.addFirst(1);
+        Assert.assertEquals(1, (int)iterator.next());
+        Assert.assertEquals(2, (int)iterator.next());
     }
 
 
