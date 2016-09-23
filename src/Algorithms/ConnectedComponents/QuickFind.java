@@ -8,7 +8,7 @@ package Algorithms.ConnectedComponents;
 public class QuickFind implements IUnionFind
 {
 
-    int nodeIds[];
+    private int nodeIds[];
 
 
     public QuickFind(int nodeCount)

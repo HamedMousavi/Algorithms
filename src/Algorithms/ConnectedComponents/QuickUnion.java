@@ -6,7 +6,7 @@ package Algorithms.ConnectedComponents;
 public class QuickUnion implements IUnionFind
 {
 
-    int nodeIds[];
+    private int nodeIds[];
 
 
     public QuickUnion(int nodeCount)

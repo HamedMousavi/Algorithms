@@ -6,8 +6,8 @@ package Algorithms.ConnectedComponents;
 public class QuickFindAndUnion implements IUnionFind
 {
 
-    int nodeIds[];
-    int childCount[];
+    private int nodeIds[];
+    private int childCount[];
 
 
     public QuickFindAndUnion(int nodeCount)
@@ -33,7 +33,9 @@ public class QuickFindAndUnion implements IUnionFind
         if (childCount[i] >= childCount[j])
         {
             // swap i with j
-            int temp = i; i = j; j = temp;
+            int temp = i;
+            i = j;
+            j = temp;
         }
 
         // update offset from root
