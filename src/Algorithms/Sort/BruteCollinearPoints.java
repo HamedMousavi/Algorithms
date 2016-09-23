@@ -2,6 +2,7 @@ package Algorithms.Sort;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BruteCollinearPoints
 {
@@ -15,18 +16,28 @@ public class BruteCollinearPoints
 
         pairs = new ArrayList<>();
 
-        for (int i = 0; i < points.length - 3; i++) {
-            for (int j = i + 1; j < points.length - 2; j++) {
-                for (int k = j + 1; k < points.length - 1; k++) {
-                    for (int l = k + 1; l < points.length; l++) {
-                        if (points[i].compareTo(points[j]) == points[j].compareTo(points[k]) &&
-                                points[i].compareTo(points[j]) == points[j].compareTo(points[l]))
-                        {
-                            pairs.add(0, new LineSegment(points[i], points[l]));
+        double slope;
+        Point[] col = new Point[4];
+
+        for (int i = 0; i < points.length; i++) {
+            for (int j = i + 1; j < points.length; j++) {
+                slope = points[i].slopeTo(points[j]);
+                for (int k = j + 1; k < points.length; k++) {
+                    if (slope == points[j].slopeTo(points[k])) {
+                        // If i, j, and k are on the same line
+                        // then iterate to find the forth segment
+                        for (int l = k + 1; l < points.length; l++) {
+                            if (slope == points[k].slopeTo(points[l])) {
+                                col[0] = points[i];
+                                col[1] = points[j];
+                                col[2] = points[k];
+                                col[3] = points[l];
+                                Arrays.sort(col);
+
+                                pairs.add(new LineSegment(col[0], col[3]));
+                            }
                         }
-
                     }
-
                 }
             }
         }
@@ -48,9 +59,8 @@ public class BruteCollinearPoints
 
     private boolean arrayHasNull(Point[] points)
     {
-        for(int i = 0; i< points.length; i++)
-        {
-            if (points[i] == null) return true;
+        for (Point point : points) {
+            if (point == null) return true;
         }
 
         return false;
