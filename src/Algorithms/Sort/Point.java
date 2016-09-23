@@ -1,4 +1,4 @@
-package Algorithms.Sort;
+// package Algorithms.Sort;
 
 /******************************************************************************
  *  Compilation:  javac Point.java
@@ -66,8 +66,9 @@ public class Point implements Comparable<Point>
     {
         if (this.compareTo(that) == 0) return Double.NEGATIVE_INFINITY;
         if (that.x == this.x) return Double.POSITIVE_INFINITY;
+        if (that.y == this.y) return 0;
 
-        return (double)(that.y - this.y) / (double)(that.x - this.x);
+        return ((double) that.y - (double) this.y) /  ((double) that.x - (double) this.x);
     }
 
     /**
@@ -117,13 +118,6 @@ public class Point implements Comparable<Point>
     }
 
 
-    /**
-     * Unit tests the Point data type.
-     */
-    //public static void main(String[] args) {
-        /* YOUR CODE HERE */
-    //}
-
     private class SlopeComparator implements Comparator<Point>
     {
         @Override
@@ -131,21 +125,10 @@ public class Point implements Comparable<Point>
         {
             double s1 = slopeTo(o1);
             double s2 = slopeTo(o2);
-            if ((s1 == Double.NEGATIVE_INFINITY && s1 == Double.NEGATIVE_INFINITY) ||
-                    s1 == Double.POSITIVE_INFINITY && s1 == Double.POSITIVE_INFINITY)
-            {
-                return 0;
-            }
 
-            //if (s2 == Double.NEGATIVE_INFINITY || s2 == Double.POSITIVE_INFINITY ||
-            //        s1 == Double.NEGATIVE_INFINITY || s1 == Double.POSITIVE_INFINITY) {
-            //    return 0; //?
-            //}
-
-            double ds = s1 - s2;
-            if (ds > 0.0d) return +1;
-            if (ds < 0.0d) return -1;
-            return 0;
+            if (s1 == s2) return 0;
+            if (s1 < s2) return -1;
+            return 1;
         }
     }
 }

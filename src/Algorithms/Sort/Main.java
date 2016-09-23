@@ -1,4 +1,4 @@
-package Algorithms.Sort;
+// package Algorithms.Sort;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
@@ -28,6 +28,8 @@ public class Main {
             p.draw();
         }
         StdDraw.show();
+
+
 
         // print and draw the line segments
         //BruteCollinearPoints collinear = new BruteCollinearPoints(points);

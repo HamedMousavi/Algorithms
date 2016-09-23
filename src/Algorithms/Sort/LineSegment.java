@@ -1,4 +1,4 @@
-package Algorithms.Sort;
+// package Algorithms.Sort;
 /*************************************************************************
  *  Compilation:  javac LineSegment.java
  *  Execution:    none

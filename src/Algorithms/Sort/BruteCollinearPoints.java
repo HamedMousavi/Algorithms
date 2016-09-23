@@ -1,4 +1,4 @@
-package Algorithms.Sort;
+// package Algorithms.Sort;
 
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class BruteCollinearPoints
 
 
     private boolean hasDuplicate(Point[] points) {
-        for(int i = 1; i < points.length; i++)
+        for (int i = 1; i < points.length; i++)
         {
             for (int j = 0; j < i; j++)
             {
@@ -74,6 +74,6 @@ public class BruteCollinearPoints
 
     public LineSegment[] segments()                // the line segments
     {
-        return pairs.isEmpty() ? null : pairs.toArray(new LineSegment[pairs.size()]);
+        return pairs.isEmpty() ? new LineSegment[0] : pairs.toArray(new LineSegment[pairs.size()]);
     }
 }

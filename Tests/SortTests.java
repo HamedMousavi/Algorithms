@@ -1,6 +1,3 @@
-import Algorithms.Sort.BruteCollinearPoints;
-import Algorithms.Sort.FastCollinearPoints;
-import Algorithms.Sort.Point;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -36,7 +33,7 @@ public class SortTests
     @Test
     public void BruteTest4Elements()
     {
-        Point[] points = new Point[] { new Point(1,1), new Point(1,2), new Point(1,3), new Point(1,4) };
+        Point[] points = new Point[] { new Point(1,1), new Point(1,2), new Point(1,3) };
         BruteCollinearPoints alg = new BruteCollinearPoints(points);
 
         Assert.assertEquals(alg.numberOfSegments(), 1);
